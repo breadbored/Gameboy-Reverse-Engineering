@@ -7,7 +7,7 @@
  * 
  * @copyright Copyright (c) 2023
  * 
- * @note Work In Progress - Status is functional, but cannot yet accept serial input to load images from the computer
+ * @note Work In Progress - Status is fully functional and able to print, but cannot yet accept serial input to load images from the computer
  */
 
 #include <stdio.h>
