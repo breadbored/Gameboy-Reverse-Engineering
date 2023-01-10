@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "Pi Pico",
+            "includePath": [
+                "/usr/local/Cellar/arm-none-eabi-gcc/10.3-2021.07/gcc/lib/gcc/arm-none-eabi/10.3.1/include",
+                "/usr/local/Cellar/arm-none-eabi-gcc/10.3-2021.07/gcc/lib/gcc/arm-none-eabi/10.3.1/include-fixed",
+                "/usr/local/Cellar/arm-none-eabi-gcc/10.3-2021.07/gcc/arm-none-eabi/include",
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/pico-sdk/src/**",
+                "${workspaceFolder}/pico-sdk/lib/**"
+            ],
+            "defines": [],
+            "macFrameworkPath": [],
+            "compilerPath": "/usr/local/bin/arm-none-eabi-gcc",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "macos-gcc-x64"
+        }
+    ],
+    "version": 4
+}
