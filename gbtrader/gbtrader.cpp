@@ -447,5 +447,5 @@ int main() {
         clock_last_state = clock_state;
     }
 
-    printf("It's a-done! Goodbye.");
+    printf("Its-a done! Goodbye.");
 }

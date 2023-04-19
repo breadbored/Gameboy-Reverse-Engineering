@@ -448,5 +448,5 @@ int main() {
         }
     }
 
-    printf("It's a-done! Goodbye.");
+    printf("Its-a done! Goodbye.");
 }
