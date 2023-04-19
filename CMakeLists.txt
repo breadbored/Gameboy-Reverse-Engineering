@@ -91,9 +91,24 @@ target_compile_definitions(gbinfrared PRIVATE
 PICO_STDIO_USB_CONNECT_WAIT_TIMEOUT_MS=10000
 )
 
+
+#
+# Gameboy Sniffer Executable
+#
+
+add_executable(gbsniffer
+    gbsniffer/gbsniffer.cpp
+)
+
+pico_enable_stdio_usb(gbsniffer 1)
+pico_enable_stdio_uart(gbsniffer 0)
+target_compile_definitions(gbsniffer PRIVATE
+PICO_STDIO_USB_CONNECT_WAIT_TIMEOUT_MS=10000
+)
+
 # Add pico_stdlib library which aggregates commonly used features
-target_link_libraries(gbinfrared pico_stdlib hardware_spi)
-target_include_directories(gbinfrared PRIVATE libgb)
+target_link_libraries(gbsniffer pico_stdlib hardware_spi)
+target_include_directories(gbsniffer PRIVATE libgb)
 
 # create map/bin/hex/uf2 file in addition to ELF.
-pico_add_extra_outputs(gbinfrared)
+pico_add_extra_outputs(gbsniffer)

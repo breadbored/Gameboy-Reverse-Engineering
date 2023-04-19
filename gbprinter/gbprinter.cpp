@@ -24,11 +24,18 @@
 #define PICO_STDIO_USB_CONNECT_WAIT_TIMEOUT_MS   -1
 
 #define PRINTER_CLOCK_SPEED 8192
+// Port 1
 #define GB_PRINTER_SPI spi0
-#define GB_PRINTER_RX_PIN 4
+#define GB_PRINTER_RX_PIN 0
 #define GB_PRINTER_CS_PIN 1
 #define GB_PRINTER_CLK_PIN 2
 #define GB_PRINTER_TX_PIN 3
+// Port 2
+// #define GB_PRINTER_SPI spi1
+// #define GB_PRINTER_RX_PIN 12
+// #define GB_PRINTER_CS_PIN 13
+// #define GB_PRINTER_CLK_PIN 14
+// #define GB_PRINTER_TX_PIN 15
 
 #define MAGIC_BYTE_1 0x88
 #define MAGIC_BYTE_2 0x33
@@ -370,7 +377,7 @@ int main() {
 	gpio_put(GB_PRINTER_CS_PIN,false);     // Always low
 
     spi_init(GB_PRINTER_SPI, PRINTER_CLOCK_SPEED);
-    spi_set_format(GB_PRINTER_SPI, 8, SPI_CPOL_0, SPI_CPHA_1, SPI_LSB_FIRST);
+    spi_set_format(GB_PRINTER_SPI, 8, SPI_CPOL_0, SPI_CPHA_0, SPI_LSB_FIRST);
     gpio_set_function(GB_PRINTER_RX_PIN, GPIO_FUNC_SPI);
     gpio_set_function(GB_PRINTER_CLK_PIN, GPIO_FUNC_SPI);
     gpio_set_function(GB_PRINTER_TX_PIN, GPIO_FUNC_SPI);

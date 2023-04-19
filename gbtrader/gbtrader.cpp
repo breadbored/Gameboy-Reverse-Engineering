@@ -29,11 +29,18 @@ using namespace CharacterMap::GenerationOne;
 #define BYTE_TO_BINARY(byte)  (byte & 0x80 ? '1' : '0'), (byte & 0x40 ? '1' : '0'), (byte & 0x20 ? '1' : '0'), (byte & 0x10 ? '1' : '0'), (byte & 0x08 ? '1' : '0'), (byte & 0x04 ? '1' : '0'), (byte & 0x02 ? '1' : '0'), (byte & 0x01 ? '1' : '0') 
 
 #define CLOCK_SPEED 8000
-#define GB_SPI spi0
-#define GB_RX_PIN 4
-#define GB_CS_PIN 1
-#define GB_CLK_PIN 2
-#define GB_TX_PIN 3
+// Port 1
+// #define GB_SPI spi0
+// #define GB_RX_PIN 0
+// #define GB_CS_PIN 1
+// #define GB_CLK_PIN 2
+// #define GB_TX_PIN 3
+// Port 2
+#define GB_SPI spi1
+#define GB_RX_PIN 12
+#define GB_CS_PIN 13
+#define GB_CLK_PIN 14
+#define GB_TX_PIN 15
 
 connection_state_t connection_state = connection_state_t::NOT_CONNECTED;
 trade_state_t trade_state = trade_state_t::INIT;

@@ -34,3 +34,6 @@
 # Builds
 build/
 .DS_Store
+
+pico-sdk/lib/
+pico-sdk-backup/
