@@ -37,3 +37,8 @@ build/
 
 pico-sdk/lib/
 pico-sdk-backup/
+
+# Desktop Electron App
+node_modules/
+desktop_controller/node_modules/
+desktop_client/node_modules/

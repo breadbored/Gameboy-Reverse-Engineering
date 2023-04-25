@@ -1,6 +1,6 @@
 /**
  * @file gbtrader.cpp
- * @author Jason Bradley Carpenter (brad@identex.co)
+ * @author Brad (BreadCodes / BreadBored) (brad@bread.codes)
  * @brief Gameboy Generation I/II/III Cross Generation Pokemon Trader
  * @version 0.1
  * @date 2023-01-01

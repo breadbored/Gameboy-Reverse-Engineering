@@ -1,6 +1,6 @@
 /**
  * @file gbserial.cpp
- * @author Jason Bradley Carpenter (brad@identex.co)
+ * @author Brad (BreadCodes / BreadBored) (brad@bread.codes)
  * @brief Gameboy Serial Cartridge Reader Test
  * @version 0.1
  * @date 2023-01-01

@@ -2,7 +2,7 @@
 # Pi Pico lib
 #
 
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.22)
 
 # initialize pico-sdk from submodule
 # note: this must happen before project()
@@ -74,7 +74,7 @@ PICO_STDIO_USB_CONNECT_WAIT_TIMEOUT_MS=10000
 target_link_libraries(gbserial pico_stdlib hardware_spi)
 
 # create map/bin/hex/uf2 file in addition to ELF.
-pico_add_extra_outputs(gbserial)
+# pico_add_extra_outputs(gbserial)
 
 
 #
@@ -90,6 +90,12 @@ pico_enable_stdio_uart(gbinfrared 0)
 target_compile_definitions(gbinfrared PRIVATE
 PICO_STDIO_USB_CONNECT_WAIT_TIMEOUT_MS=10000
 )
+
+# Add pico_stdlib library which aggregates commonly used features
+target_link_libraries(gbinfrared pico_stdlib hardware_spi)
+
+# create map/bin/hex/uf2 file in addition to ELF.
+pico_add_extra_outputs(gbinfrared)
 
 
 #
@@ -108,7 +114,27 @@ PICO_STDIO_USB_CONNECT_WAIT_TIMEOUT_MS=10000
 
 # Add pico_stdlib library which aggregates commonly used features
 target_link_libraries(gbsniffer pico_stdlib hardware_spi)
-target_include_directories(gbsniffer PRIVATE libgb)
 
 # create map/bin/hex/uf2 file in addition to ELF.
 pico_add_extra_outputs(gbsniffer)
+
+
+#
+# Gameboy All-In-One Tool (Paired with desktop_client)
+#
+
+add_executable(gball
+    gball/gball.cpp
+)
+
+pico_enable_stdio_usb(gball 1)
+pico_enable_stdio_uart(gball 0)
+target_compile_definitions(gball PRIVATE
+PICO_STDIO_USB_CONNECT_WAIT_TIMEOUT_MS=10000
+)
+
+# Add pico_stdlib library which aggregates commonly used features
+target_link_libraries(gball pico_stdlib hardware_spi)
+
+# create map/bin/hex/uf2 file in addition to ELF.
+pico_add_extra_outputs(gball)
