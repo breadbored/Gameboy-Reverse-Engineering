@@ -164,10 +164,21 @@ const GBPrinter = ({ port }: { port: SerialPort<unknown> | undefined }) => {
       writeBuffer &&
       (!prevWriteBuffer || !Buffer.compare(writeBuffer, prevWriteBuffer))
     ) {
-      const buffer_data = writeBuffer;
-      console.log("Writing...", buffer_data);
       setWriting(true);
-      port.write(buffer_data, (err: Error | null | undefined) => {
+
+      // Convert to hex string
+      // This is to avoid null bytes in stdin/stdout
+      // This should only double the data size and avoid that problem
+      let bd = "";
+      writeBuffer.forEach((p) => {
+          const str = p.toString(16).padStart(2, "0");
+          bd += str;
+      });
+      // 0x69 0x45 are the terminate bytes
+      const stringBuffer = Buffer.from(bd + "6945", "ascii")
+      console.log("Writing  bytes...", stringBuffer);
+
+      port.write(stringBuffer, (err: Error | null | undefined) => {
         if (err) {
           console.log("ERROR WRITING", err);
           setWriting(false);
@@ -182,13 +193,13 @@ const GBPrinter = ({ port }: { port: SerialPort<unknown> | undefined }) => {
             const read_data = port.read(); // TODO: Determine if working
             console.log("read_data", read_data);
             setPendingWrite(false);
-            setPrevWriteBuffer(buffer_data);
-        }, 1000)
+            setPrevWriteBuffer(stringBuffer);
+        }, 3000)
       });
     } else {
       console.log("Port wasn't ready...");
     }
-  }, [port, prevWriteBuffer, writeBuffer]);
+  }, [port, writeBuffer]);
 
   return (
     <div>
@@ -201,15 +212,24 @@ const GBPrinter = ({ port }: { port: SerialPort<unknown> | undefined }) => {
           <h5>Canvas Height: {canvas.current?.height}</h5>
         </>
       )}
-      {/* {image && (
+      {image && (
         <img
           src={image}
           style={{
-            width: GB_PRINTER_WIDTH,
+            ...style,
+            // Overwriting the style temporarily... unless it becomes permanent
+            width: "calc(50% - 6px)",
+            height: "unset",
+            marginRight: "10px",
           }}
         />
-      )} */}
-      <canvas ref={canvas} width={dw} height={dh} style={style} />
+      )}
+      <canvas ref={canvas} width={dw} height={dh} style={{
+        ...style,
+        // Overwriting the style temporarily... unless it becomes permanent
+        width: "calc(50% - 6px)",
+        height: "unset",
+      }} />
     </div>
   );
 };

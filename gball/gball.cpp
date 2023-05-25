@@ -54,6 +54,41 @@ static void printbuf(uint8_t buf[], size_t len) {
     }
 }
 
+static void get_buffer(uint8_t* buffer) {
+    uint8_t prev;
+    for (int i = 0; i < 2500; i++) {
+        uint8_t upper;
+        uint8_t lower;
+        for (int i = 0; i < 2; i++) {
+            while (1) { // Use a While to wait for the next character
+                int character = getchar_timeout_us(0);
+                if (character != PICO_ERROR_TIMEOUT) {
+                    uint8_t c = character & 0xFF;
+
+                    if (i == 0) upper = c;
+                    else lower = c;
+
+                    break;
+                }
+            }
+        }
+        uint8_t byte;
+        char byte_str[5] = { '0', 'x', upper, lower, '\0' };
+        // Convert HEX str to uint8
+        // https://stackoverflow.com/questions/10156409/convert-hex-string-char-to-int
+        byte = (uint8_t)strtol(byte_str, NULL, 16);
+
+        printf("%x", byte); // DEBUGs
+
+        if (prev == 0x69 && byte == 69) {
+            // The EOF codes are 0x69 and 69 (0x45)
+            break;
+        }
+        buffer[i] = byte;
+        prev = byte;
+    }
+}
+
 int main() {
     // Enable UART/USB so we can print via USB Serial
     stdio_init_all();
@@ -62,15 +97,10 @@ int main() {
     while (!tud_cdc_connected()) { sleep_ms(100);  }
     printf("USB Connected\n");
 
-    bool is_done = false;
-    while (!is_done)
-    {
-        int character = getchar_timeout_us(0);
-        if (character != PICO_ERROR_TIMEOUT) {
-            char c = character & 0xFF;
-            char ca[1] = { c };
-            printf(ca); // TODO RESPONSE BACK TO CLIENT
-        }
+    while (1) {
+        uint8_t buffer[2500];
+
+        get_buffer(buffer);
     }
 
     printf("Listening to both devices...\n");
