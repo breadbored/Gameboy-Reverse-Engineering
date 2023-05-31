@@ -81,6 +81,7 @@ struct JoyBusState {
     bool controller_type = ControllerTypeBit::Nintendo_64;
     bool wireless_type = WirelessTypeBit::Infrared;
     bool wireless_state = WirelessStateBit::VARIABLE;
+    bool standard_controller = true;
 };
 
 enum BitSate {

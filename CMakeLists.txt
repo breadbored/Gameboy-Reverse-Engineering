@@ -159,3 +159,46 @@ target_link_libraries(joybus pico_stdlib hardware_spi)
 
 # create map/bin/hex/uf2 file in addition to ELF.
 pico_add_extra_outputs(joybus)
+
+
+#
+# Famicom Keyboard
+#
+
+add_executable(famicomkeyboard
+    famicomkeyboard/famicomkeyboard.cpp
+)
+
+pico_enable_stdio_usb(famicomkeyboard 1)
+pico_enable_stdio_uart(famicomkeyboard 0)
+target_compile_definitions(famicomkeyboard PRIVATE
+PICO_STDIO_USB_CONNECT_WAIT_TIMEOUT_MS=10000
+)
+
+# Add pico_stdlib library which aggregates commonly used features
+target_link_libraries(famicomkeyboard pico_stdlib hardware_spi)
+
+# create map/bin/hex/uf2 file in addition to ELF.
+pico_add_extra_outputs(famicomkeyboard)
+
+
+
+#
+# SNES Controller Test
+#
+
+add_executable(snescontroller
+    snescontroller/snescontroller.cpp
+)
+
+pico_enable_stdio_usb(snescontroller 1)
+pico_enable_stdio_uart(snescontroller 0)
+target_compile_definitions(snescontroller PRIVATE
+PICO_STDIO_USB_CONNECT_WAIT_TIMEOUT_MS=10000
+)
+
+# Add pico_stdlib library which aggregates commonly used features
+target_link_libraries(snescontroller pico_stdlib hardware_spi)
+
+# create map/bin/hex/uf2 file in addition to ELF.
+pico_add_extra_outputs(snescontroller)
