@@ -84,19 +84,8 @@ int main() {
 	gpio_set_dir(SNES_LATCH, true);  // output
 	gpio_set_dir(SNES_SERIAL, false);  // input & output
 
-    clock_t last_time = clock();
-    bool latch = LOW;
-    bool out = HIGH;
-    bool clock_state = HIGH;
-    bool clock_last_state = LOW;
-    uint8_t cycle = 0;
-
-    bool in_bit = false;
-    uint16_t data = 0x0000;
-
-    gpio_put(SNES_CLK, clock_state);
-    gpio_put(SNES_LATCH, latch);
-    gpio_put(SNES_SERIAL, out);
+    gpio_put(SNES_CLK, HIGH);
+    gpio_put(SNES_LATCH, LOW);
 
     while (true) {
         Controller controller = Controller();
@@ -167,8 +156,7 @@ int main() {
             sleep_us(6);
         }
 
-        if (clock() - WAIT_TIME - last_time > 0)
-            sleep_us(WAIT_TIME);
+        sleep_us(WAIT_TIME - 216);
     }
 
     return 0;
