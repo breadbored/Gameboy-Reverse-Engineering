@@ -23,6 +23,9 @@
 
 #define PICO_STDIO_USB_CONNECT_WAIT_TIMEOUT_MS   -1
 
+#define BYTE_TO_BINARY(byte)  (byte & 0x80 ? '1' : '0'), (byte & 0x40 ? '1' : '0'), (byte & 0x20 ? '1' : '0'), (byte & 0x10 ? '1' : '0'), (byte & 0x08 ? '1' : '0'), (byte & 0x04 ? '1' : '0'), (byte & 0x02 ? '1' : '0'), (byte & 0x01 ? '1' : '0') 
+#define U16_TO_BINARY(byte)   BYTE_TO_BINARY((final >> 8)), BYTE_TO_BINARY((final & 0xFF))
+
 #define HIGH true
 #define LOW false
 
@@ -95,68 +98,115 @@ int main() {
         gpio_put(SNES_LATCH, LOW);
         sleep_us(6);
 
+
+        // Clean console
+        for (int n = 0; n < 1; n++){
+            printf("\n");
+        }
+
+        uint16_t controller_raw = 0x0000;
+        bool is_mouse = false;
+
+        // Regular controller
         for(int i = 0; i < 16; i++){
             gpio_put(SNES_CLK, LOW);
             sleep_us(6);
-            if(i <= 11){
-                bool state = !gpio_get(SNES_SERIAL);
-                switch (i)
-                {
-                case 0:
-                    controller.B = state;
-                    if (state) printf("B\n");
-                    break;
-                case 1:
-                    controller.Y = state;
-                    if (state) printf("Y\n");
-                    break;
-                case 2:
-                    controller.SELECT = state;
-                    if (state) printf("SELECT\n");
-                    break;
-                case 3:
-                    controller.START = state;
-                    if (state) printf("START\n");
-                    break;
-                case 4:
-                    controller.D_UP = state;
-                    if (state) printf("D UP\n");
-                    break;
-                case 5:
-                    controller.D_DOWN = state;
-                    if (state) printf("D DOWN\n");
-                    break;
-                case 6:
-                    controller.D_LEFT = state;
-                    if (state) printf("D LEFT\n");
-                    break;
-                case 7:
-                    controller.D_RIGHT = state;
-                    if (state) printf("D RIGHT\n");
-                    break;
-                case 8:
-                    controller.A = state;
-                    if (state) printf("A\n");
-                    break;
-                case 9:
-                    controller.X = state;
-                    if (state) printf("X\n");
-                    break;
-                case 10:
-                    controller.SHOULDER_L = state;
-                    if (state) printf("SHOULDER_L\n");
-                    break;
-                case 11:
-                    controller.SHOULDER_R = state;
-                    if (state) printf("SHOULDER_R\n");
-                    break;
-                }
+            bool state = !gpio_get(SNES_SERIAL);
+            controller_raw |= (state ? 0b1 : 0b0) << (16 - i);
+            switch (i)
+            {
+            case 0:
+                controller.B = state;
+                if (state) printf("B\n");
+                break;
+            case 1:
+                controller.Y = state;
+                if (state) printf("Y\n");
+                break;
+            case 2:
+                controller.SELECT = state;
+                if (state) printf("SELECT\n");
+                break;
+            case 3:
+                controller.START = state;
+                if (state) printf("START\n");
+                break;
+            case 4:
+                controller.D_UP = state;
+                if (state) printf("D UP\n");
+                break;
+            case 5:
+                controller.D_DOWN = state;
+                if (state) printf("D DOWN\n");
+                break;
+            case 6:
+                controller.D_LEFT = state;
+                if (state) printf("D LEFT\n");
+                break;
+            case 7:
+                controller.D_RIGHT = state;
+                if (state) printf("D RIGHT\n");
+                break;
+            case 8:
+                controller.A = state;
+                if (state) printf("A\n");
+                break;
+            case 9:
+                controller.X = state;
+                if (state) printf("X\n");
+                break;
+            case 10:
+                controller.SHOULDER_L = state;
+                if (state) printf("SHOULDER_L\n");
+                break;
+            case 11:
+                controller.SHOULDER_R = state;
+                if (state) printf("SHOULDER_R\n");
+                break;
+            case 15:
+                printf("Bit 16 is %s\n", state ? "HIGH" : "LOW");
+                is_mouse = state;
+                break;
             }
             gpio_put(SNES_CLK, HIGH);
             sleep_us(6);
         }
 
-        sleep_us(WAIT_TIME - 216);
+        printf("Controller: %u\n", controller_raw);
+
+        // SNES mouse
+        if (is_mouse) {
+            sleep_us(2.5);
+            uint16_t final = 0x0000;
+            bool up = false;
+            uint8_t vert_delta = 0x00;
+            bool left = false;
+            uint8_t horiz_delta = 0x00;
+            for(int i = 0; i < 16; i++){
+                gpio_put(SNES_CLK, LOW);
+                sleep_us(6);
+                bool state = !gpio_get(SNES_SERIAL);
+                final |= (state ? 0b1 : 0b0) << (16 - i);
+                if (i < 8) {
+                    // Up / Down
+                    if (i == 0) up = state;
+                    vert_delta |= state << (7 - (i-1));
+                } else {
+                    int i_delta = i - 8;
+                    // Left / Right
+                    if (i_delta == 0) left = state;
+                    horiz_delta |= state << (7 - (i_delta-1));
+                }
+                gpio_put(SNES_CLK, HIGH);
+                sleep_us(6);
+            }
+
+            printf("Mouse: %u\n", final);
+            printf("Mouse: %s %u\n", up ? "UP" : "DOWN", vert_delta);
+            printf("Mouse: %s %u\n", left ? "LEFT" : "RIGHT", horiz_delta);
+        }
+
+        sleep_us(WAIT_TIME - (216 - (is_mouse ? 2.5 : 0)));
     }
 
     return 0;
