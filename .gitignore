@@ -42,3 +42,4 @@ pico-sdk-backup/
 node_modules/
 desktop_controller/node_modules/
 desktop_client/node_modules/
+.DS_Store

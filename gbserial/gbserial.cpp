@@ -98,6 +98,7 @@ void address_write(uint32_t address, size_t bit_size) {
 
 uint16_t read_gba_data(uint32_t address) {
     address_write(address, 24);
+    return 0x0000;
 }
 
 int main() {
