@@ -72,7 +72,10 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "cinttypes": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "chrono": "cpp",
+        "netfwd": "cpp",
+        "ratio": "cpp"
     },
     "cmake.cmakePath": "/Applications/CMake.app/Contents/bin/cmake"
 }

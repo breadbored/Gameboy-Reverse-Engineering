@@ -19,7 +19,7 @@
 #include "pico/binary_info.h"
 #include "hardware/spi.h"
 
-#include "../libgb/CharacterMap.hpp"
+#include "../libgb/Pokemon/CharacterMap.hpp"
 using namespace CharacterMap::GenerationTwo;
 
 #define DEBUG true

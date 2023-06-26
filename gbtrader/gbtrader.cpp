@@ -20,7 +20,7 @@
 #include "hardware/spi.h"
 
 #include "gen1.hpp"
-#include "../libgb/CharacterMap.hpp"
+#include "../libgb/Pokemon/CharacterMap.hpp"
 using namespace CharacterMap::GenerationOne;
 
 #define DEBUG true

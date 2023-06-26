@@ -1,5 +1,6 @@
 namespace CharacterMap {
     inline namespace GenerationOne {
+        class PokeString;
         enum GenOneCharacterMap {
             // https://bulbapedia.bulbagarden.net/wiki/Character_encoding_(Generation_I)
             STOP_BYTE = 0x50, // Ends a string
