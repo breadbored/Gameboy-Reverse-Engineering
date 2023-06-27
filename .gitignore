@@ -37,6 +37,7 @@ build/
 
 pico-sdk/lib/
 pico-sdk-backup/
+tinyusb/
 
 # Desktop Electron App
 node_modules/

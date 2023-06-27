@@ -58,3 +58,13 @@ add_subdirectory(famicomkeyboard)
 # SNES Controller Test
 #
 add_subdirectory(snescontroller)
+
+#
+# HID Test
+#
+add_subdirectory(HID)
+
+#
+# HID Test
+#
+add_subdirectory(snesHID)
